@@ -28,10 +28,10 @@ function parse_file(file, miliseconds=undefined) {
     let start_time = data[0]['T'];
     for (let i=0; i<data.length; i++) {
         let current_time = (data[i]['T']-start_time);
-        x_axis.push(current_time);
-        y_axis.push(data[i]['p']);
         if (miliseconds !== undefined && current_time >= miliseconds)
             break;
+        x_axis.push(current_time);
+        y_axis.push(data[i]['p']);
     }
     return [x_axis, y_axis];
 }
