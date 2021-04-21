@@ -14,6 +14,7 @@ const http_server = http.createServer(app).listen(http_port, function () {
 });
 
 app.get("/", function(req, res) {
+    let files = fs.readdirSync(trades_path);
     res.render("index",{
         files: files
     });
