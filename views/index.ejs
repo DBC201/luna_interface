@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graphs</title>
+</head>
+<body>
+<% if (files === undefined || files.length == 0) {%>
+    <h>No data</h>
+<% } else { %>
+    <% for (let i=0; i<files.length; i++) { %>
+        <p><%= files[i]%></p>
+        <a href="/graph/<%= files[i]%>/1000">1 second</a>
+        <br>
+        <a href="/graph/<%= files[i]%>">60 seconds</a>
+        <br>
+        <br>
+        <br>
+    <% } %>
+<%}%>
+</body>
+</html>

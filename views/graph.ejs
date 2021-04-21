@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <a href="/">Home</a>
+    <canvas id="graph"></canvas>
+    <script>
+        const data = {
+            labels: <%- x_axis -%>,
+            datasets: [{
+                label: "Price",
+                data:  <%- y_axis -%>,
+                borderColor: 'rgb(215,18,18)',
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: data,
+        };
+
+        let graph = new Chart(
+            document.getElementById("graph"),
+            config
+        );
+    </script>
+</body>
+</html>
