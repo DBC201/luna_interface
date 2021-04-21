@@ -9,8 +9,6 @@ const trades_path = process.env.trades_path;
 
 app.set("view engine", "ejs");
 
-const files = fs.readdirSync(trades_path);
-
 const http_server = http.createServer(app).listen(http_port, function () {
     console.log("Running on port " + http_port);
 });
@@ -38,6 +36,7 @@ function parse_file(file, miliseconds=undefined) {
 
 app.get("/graph/:file", function(req, res){
     let file_name = req.params.file;
+    let files = fs.readdirSync(trades_path);
     if (files.indexOf(file_name) !== -1) {
         let axes = parse_file(path.join(trades_path, file_name));
         res.render("graph", {
@@ -52,6 +51,7 @@ app.get("/graph/:file", function(req, res){
 
 app.get("/graph/:file/:timeframe", function(req, res){
     let file_name = req.params.file;
+    let files = fs.readdirSync(trades_path);
     if (files.indexOf(file_name) !== -1) {
         let axes = parse_file(path.join(trades_path, file_name), req.params.timeframe);
         res.render("graph", {
