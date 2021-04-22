@@ -22,7 +22,7 @@ router.get("/graph/:file", function(req, res){
     let file_name = req.params.file;
     let files = fs.readdirSync(process.env.trades_path);
     if (files.indexOf(file_name) !== -1) {
-        let axes = parse_file(path.join(trades_path, file_name));
+        let axes = parse_file(path.join(process.env.trades_path, file_name));
         res.render("graph", {
             x_axis: JSON.stringify(axes[0]),
             y_axis: JSON.stringify(axes[1])
