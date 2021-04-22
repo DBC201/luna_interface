@@ -20,7 +20,7 @@ function parse_file(file, miliseconds=undefined) {
 
 router.get("/graph/:file", function(req, res){
     let file_name = req.params.file;
-    let files = fs.readdirSync(trades_path);
+    let files = fs.readdirSync(process.env.trades_path);
     if (files.indexOf(file_name) !== -1) {
         let axes = parse_file(path.join(trades_path, file_name));
         res.render("graph", {
