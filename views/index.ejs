@@ -5,6 +5,11 @@
     <title>Graphs</title>
 </head>
 <body>
+<p>Add yourself to the mailing list when a new listing arrives</p><br>
+<input id="email"><br>
+<button onclick="add_mail()">Add</button><br>
+<button onclick="remove_mail()">Remove</button>
+<p id="response"></p><br>
 <% if (files === undefined || files.length == 0) {%>
     <h>No data</h>
 <% } else { %>
@@ -18,5 +23,28 @@
         <br>
     <% } %>
 <%}%>
+<script>
+    function add_mail() {
+        document.getElementById("response").innerText = "adding...";
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/email/add");
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(JSON.stringify({email: document.getElementById("email").value}));
+        xhr.onload = function () {
+            document.getElementById("response").innerText = xhr.response;
+        }
+    }
+
+    function remove_mail() {
+        document.getElementById("response").innerText = "removing...";
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/email/remove");
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(JSON.stringify({email: document.getElementById("email").value}));
+        xhr.onload = function () {
+            document.getElementById("response").innerText = xhr.response;
+        }
+    }
+</script>
 </body>
 </html>
