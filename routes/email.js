@@ -11,10 +11,8 @@ function open_database(path) {
 
 
 router.post("/email/add", function (req, res) {
-    if (!req.body.email) {
-        res.send("error");
-    } else {
-        let email_address = req.body.email;
+    let email_address = req.body.email;
+    if (email_address) {
         let database = open_database(process.env.database_dir);
         setTimeout(() => {
             database.get("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1], function (err) {
@@ -28,24 +26,30 @@ router.post("/email/add", function (req, res) {
                 }
             });
         }, 3000);
+    } else {
+        res.send("error");
     }
 });
 
-router.post("/email/remove", function(req, res){
-   let email_address = req.body.email;
-   let database = open_database(process.env.database_dir);
-   setTimeout(() => {
-       database.run("DELETE FROM emails WHERE email = ?", [email_address], function (err) {
-           if (err) {
-               console.log(err);
-               res.send("error");
-               database.close();
-           } else {
-               res.send("done");
-               database.close();
-           }
-       });
-   }, 3000);
+router.post("/email/remove", function (req, res) {
+    let email_address = req.body.email;
+    if (email_address) {
+        let database = open_database(process.env.database_dir);
+        setTimeout(() => {
+            database.run("DELETE FROM emails WHERE email = ?", [email_address], function (err) {
+                if (err) {
+                    console.log(err);
+                    res.send("error");
+                    database.close();
+                } else {
+                    res.send("done");
+                    database.close();
+                }
+            });
+        }, 3000);
+    } else {
+        res.send("error");
+    }
 });
 
 module.exports = router;
