@@ -15,14 +15,24 @@ router.post("/email/add", function (req, res) {
     if (email_address) {
         let database = open_database(process.env.database_dir);
         setTimeout(() => {
-            database.get("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1], function (err) {
-                if (err) {
+            database.get("SELECT * FROM emails WHERE email = ?", [email_address], function (err, rows){
+                if (rows) {
+                    res.send("already added");
+                    database.close();
+                } else if (err) {
                     console.log(err);
-                    res.send("error");
                     database.close();
                 } else {
-                    res.send("done");
-                    database.close();
+                    database.get("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1], function (err) {
+                        if (err) {
+                            console.log(err);
+                            res.send("error");
+                            database.close();
+                        } else {
+                            res.send("done");
+                            database.close();
+                        }
+                    });
                 }
             });
         }, 3000);
