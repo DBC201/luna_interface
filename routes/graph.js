@@ -25,7 +25,8 @@ router.get("/graph/:file", function(req, res){
         let axes = parse_file(path.join(process.env.trades_path, file_name));
         res.render("graph", {
             x_axis: JSON.stringify(axes[0]),
-            y_axis: JSON.stringify(axes[1])
+            y_axis: JSON.stringify(axes[1]),
+            title: file_name.split('_')[0]
         });
     } else {
         res.send("Wrong graph");
