@@ -7,10 +7,12 @@
 </head>
 <body>
     <a href="/">Home</a>
+    <p>Time start and end(ms): </p><input id="time_begin" value=0><input id="time_end" value=60000><button onclick="draw()">Graph</button>
     <canvas id="graph"></canvas>
     <script>
-        const data = {
-            labels: <%- x_axis -%>,
+        let labels = <%- x_axis -%>;
+        let data = {
+            labels: labels,
             datasets: [{
                 label: "Price",
                 data:  <%- y_axis -%>,
@@ -26,6 +28,27 @@
             document.getElementById("graph"),
             config
         );
+        function draw() {
+            let start_index = 0;
+            let end_index = labels.length;
+            let start_set = false;
+            let end_set = false;
+            let start_time = document.getElementById("time_begin").value;
+            let end_time = document.getElementById("time_end").value;
+            for (let i=0; i<labels.length; i++) {
+                if (!start_set && labels[i] >= start_time) {
+                    start_index = i;
+                    start_set = true;
+                }
+                if (!end_set && labels[i] >= end_time) {
+                    end_index = i;
+                    end_set = true;
+                }
+            }
+            graph.config.data.labels = labels.slice(start_index, end_index);
+            graph.update();
+        }
+
     </script>
 </body>
 </html>

@@ -14,12 +14,7 @@
     <h>No data</h>
 <% } else { %>
     <% for (let i=0; i<files.length; i++) { %>
-        <p><%= files[i]%></p>
-        <a href="/graph/<%= files[i]%>/1000">1 second</a>
-        <br>
-        <a href="/graph/<%= files[i]%>">60 seconds</a>
-        <br>
-        <br>
+        <a href="/graph/<%= files[i]%>"><%= files[i]%></a><br>
         <br>
     <% } %>
 <%}%>
