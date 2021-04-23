@@ -8,4 +8,8 @@ It also has an [email sender](https://github.com/DBC201/Luna/tree/master/luna_sc
 and emails to the added addresses automatically. Abilitiy to add and remove from email list is also possible.
 Required env variables can be seen in ".env". The user must create their own ".env.local" file.
 
+# Why?
+Quite often new listings make up the top gainers section. We just wanted to investigate the truth behind this.
+There is also a bot [that auto buys and sells coins upon listing](https://github.com/DBC201/Luna/tree/master/luna_scripts/listing_buy).
+
 Maybe I'll buy a domain and set up https.
