@@ -6,11 +6,13 @@
 </head>
 <body>
 <a href="https://github.com/DBC201/luna_interface">What is this?</a><br>
-<p>Add yourself to the mailing list to get notified when a new listing arrives</p><br>
+<p>Add yourself to the mailing list to get notified when a new listing arrives</p>
+<p>It also notifies of sudden price changes, see <a href="https://github.com/DBC201/Luna/tree/master/luna_scripts/meme">this</a></p>
 <input id="email"><br>
 <button onclick="add_mail()">Add</button><br>
 <button onclick="remove_mail()">Remove</button>
-<p id="response"></p><br>
+<p id="response"></p>
+<p>There is a timeout to prevent spam</p><br>
 <% if (files === undefined || files.length == 0) {%>
     <h>No data</h>
 <% } else { %>

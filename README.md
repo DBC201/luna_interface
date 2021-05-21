@@ -5,7 +5,8 @@ A very simple website interface for [Luna](https://github.com/DBC201/Luna).
 It is fully automatic, working together with [Luna's listing log](https://github.com/DBC201/Luna/tree/master/luna_scripts/listing_log).
 It also has an [email sender](https://github.com/DBC201/Luna/tree/master/luna_scripts/listing_mail) which
 [scrapes the Binance announcement page](https://github.com/DBC201/Luna/blob/master/luna_modules/binance/BinanceAnnouncementScrape.py) 
-and emails to the added addresses automatically. Abilitiy to add and remove from email list is also possible.
+and emails to the added addresses automatically. It also notifies of sudden price movements in market([see this](https://github.com/DBC201/Luna/tree/master/luna_scripts/meme)).
+Abilitiy to add and remove from email list is also possible.
 Required env variables can be seen in ".env". The user must create their own ".env.local" file.
 
 # Why?
