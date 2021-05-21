@@ -21,6 +21,7 @@ router.post("/email/add", function (req, res) {
                     database.close();
                 } else if (err) {
                     console.log(err);
+                    res.send("error");
                     database.close();
                 } else {
                     database.get("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1], function (err) {
