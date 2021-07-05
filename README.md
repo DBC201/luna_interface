@@ -12,3 +12,8 @@ Required env variables can be seen in ".env". The user must create their own ".e
 # Why?
 Quite often new listings make up the top gainers section. We just wanted to investigate the truth behind this.
 There is also a bot [that auto buys and sells coins upon listing](https://github.com/DBC201/Luna/tree/master/luna_scripts/listing_buy).
+
+# Known Bugs
+These are minor bugs that I did not bother to fix.
+- If you do not define trade folders in .env, the website will throw an error. Can be fixed with 
+testing if the folders exist.
