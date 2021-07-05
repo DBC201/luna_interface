@@ -60,22 +60,22 @@
         );
         function draw() {
             let start_index = 0;
-            let end_index = labels.length;
+            let end_index = x_axis.length;
             let start_set = false;
             let end_set = false;
             let start_time = document.getElementById("time_begin").value;
             let end_time = document.getElementById("time_end").value;
-            for (let i = 0; i < labels.length; i++) {
-                if (!start_set && labels[i] >= start_time) {
+            for (let i = 0; i < x_axis.length; i++) {
+                if (!start_set && x_axis[i] >= start_time) {
                     start_index = i;
                     start_set = true;
                 }
-                if (!end_set && labels[i] >= end_time) {
+                if (!end_set && x_axis[i] >= end_time) {
                     end_index = i;
                     end_set = true;
                 }
             }
-            graph.config.data.labels = labels.slice(start_index, end_index);
+            graph.config.data.labels = x_axis.slice(start_index, end_index);
             graph.update();
         }
     </script>
