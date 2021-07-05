@@ -7,9 +7,20 @@ const graph = require(path.join(__dirname, "graph"));
 const email = require(path.join(__dirname, "email"));
 
 router.get("/", function(req, res) {
-    let files = fs.readdirSync(process.env.trades_path);
-    res.render("index",{
-        files: files
+    res.render("index");
+});
+
+router.get("/live_trades", function(req, res) {
+    let file_names = fs.readdirSync(process.env.live_path);
+    res.render("files", {
+        file_names: file_names
+    });
+});
+
+router.get("/historical_trades", function(req, res) {
+    let file_names = fs.readdirSync(process.env.historical_path);
+    res.render("files", {
+        file_names: file_names
     });
 });
 
