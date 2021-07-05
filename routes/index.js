@@ -11,6 +11,6 @@ router.get("/", function(req, res) {
 });
 
 router.get("/trades/*", graph);
-router.post("/trades/*", email);
+router.post("/email/*", email);
 
 module.exports = router;
