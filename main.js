@@ -50,3 +50,7 @@ if (argv.no_https){
 
 app.get("*", routes);
 app.post("*", routes);
+
+app.use(function (req, res, next) {
+    res.send("page not found");
+});

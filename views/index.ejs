@@ -7,20 +7,18 @@
 <body>
 <a href="https://github.com/DBC201/luna_interface">What is this?</a><br>
 <p>Add yourself to the mailing list to get notified when a new listing arrives</p>
-<p>It also notifies of sudden price changes, see <a href="https://github.com/DBC201/Luna/tree/master/luna_scripts/meme">this</a></p>
 <input id="email"><br>
 <button onclick="add_mail()">Add</button><br>
 <button onclick="remove_mail()">Remove</button>
 <p id="response"></p>
 <p>There is a timeout to prevent spam</p><br>
-<% if (files === undefined || files.length == 0) {%>
-    <h>No data</h>
-<% } else { %>
-    <% for (let i=0; i<files.length; i++) { %>
-        <a href="/graph/<%= files[i]%>"><%= files[i]%></a><br>
-        <br>
-    <% } %>
-<%}%>
+<p>Try out our <a href="https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot">discord bot!</a></p><br>
+<p>The discord bot sends notifications to the added channels when a coin listed on binance goes up and down by 10% and 50% in the past hour.</p><br>
+<p>Just do bogdanoff: add to the channel you want it to send notifications to, bogdanoff: remove will remove that channel from notification list</p>
+
+<a href="/live">Live logged trades</a>
+<a href="/historical">Historical trades</a>
+
 <script>
     function add_mail() {
         document.getElementById("response").innerText = "adding...";

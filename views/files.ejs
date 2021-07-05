@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luna</title>
+</head>
+<body>
+<% if (files === undefined || files.length == 0) {%>
+    <h>No data</h>
+<% } else { %>
+    <% for (let i=0; i<files.length; i++) { %>
+        <a href="/graph/<%= files[i]%>"><%= files[i]%></a><br>
+        <br>
+    <% } %>
+<%}%>
+</body>
+</html>

@@ -9,33 +9,31 @@ function open_database(path) {
     });
 }
 
+function database_query(sql, params=[]) {
+    let database = open_database(process.env.database_dir);
+    return new Promise(function (resolve, reject) {
+       database.all(sql, params, function (err, rows) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+       });
+    });
+}
+
 
 router.post("/email/add", function (req, res) {
     let email_address = req.body.email;
     if (email_address) {
-        let database = open_database(process.env.database_dir);
-        setTimeout(() => {
-            database.get("SELECT * FROM emails WHERE email = ?", [email_address], function (err, rows){
-                if (rows) {
-                    res.send("already added");
-                    database.close();
-                } else if (err) {
-                    console.log(err);
-                    res.send("error");
-                    database.close();
-                } else {
-                    database.get("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1], function (err) {
-                        if (err) {
-                            console.log(err);
-                            res.send("error");
-                            database.close();
-                        } else {
-                            res.send("done");
-                            database.close();
-                        }
-                    });
-                }
-            });
+        setTimeout(async () => {
+            let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
+            if (emails) {
+                res.send("already added");
+            } else {
+                await database_query("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1]);
+                res.send("done");
+            }
         }, 3000);
     } else {
         res.send("error");
@@ -45,18 +43,14 @@ router.post("/email/add", function (req, res) {
 router.post("/email/remove", function (req, res) {
     let email_address = req.body.email;
     if (email_address) {
-        let database = open_database(process.env.database_dir);
-        setTimeout(() => {
-            database.run("DELETE FROM emails WHERE email = ?", [email_address], function (err) {
-                if (err) {
-                    console.log(err);
-                    res.send("error");
-                    database.close();
-                } else {
-                    res.send("done");
-                    database.close();
-                }
-            });
+        setTimeout(async () => {
+            let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
+            if (emails) {
+                await database_query("DELETE FROM emails WHERE email = ?", [email_address]);
+                res.send("deleted");
+            } else {
+                res.send("this email doesn't exist in the database.");
+            }
         }, 3000);
     } else {
         res.send("error");
