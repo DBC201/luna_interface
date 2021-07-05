@@ -6,16 +6,46 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <a href="/">Home</a>
+    <a href="/">Home</a><br>
+    <br>
+    <button onclick="download_json()">Download raw data</button>
     <p>Time start and end(ms): </p><input id="time_begin" value=0><input id="time_end" value=60000><button onclick="draw()">Graph</button>
     <canvas id="graph"></canvas>
     <script>
-        let labels = <%- x_axis -%>;
+        let file_data = <%- data %>;
+        function download_json() {
+            var textToSave = JSON.stringify(file_data);
+            var hiddenElement = document.createElement('a');
+
+            hiddenElement.href = 'data:attachment/json,' + encodeURI(textToSave);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = "<%-file_name %>";
+            hiddenElement.click();
+        }
+        let is_live = "<%- type %>" === "live";
+        let x_axis = [];
+        let y_axis = [];
+        if (is_live) {
+            let start_time = file_data[0]['T'];
+            for (let i=0; i<file_data.length; i++) {
+                let current_time = (file_data[i]['T']-start_time);
+                x_axis.push(current_time);
+                y_axis.push(file_data[i]['p']);
+            }
+        } else {
+            let start_time = file_data[0]['time'];
+            for (let i=0; i<file_data.length; i++) {
+                let current_time = (file_data[i]['time']-start_time);
+                x_axis.push(current_time);
+                y_axis.push(file_data[i]['price']);
+            }
+        }
+        document.getElementById("time_end").value = x_axis[x_axis.length-1];
         let data = {
-            labels: labels,
+            labels: x_axis,
             datasets: [{
                 label: "Price",
-                data:  <%- y_axis -%>,
+                data:  y_axis,
                 borderColor: 'rgb(215,18,18)',
             }]
         };
@@ -35,7 +65,7 @@
             let end_set = false;
             let start_time = document.getElementById("time_begin").value;
             let end_time = document.getElementById("time_end").value;
-            for (let i=0; i<labels.length; i++) {
+            for (let i = 0; i < labels.length; i++) {
                 if (!start_set && labels[i] >= start_time) {
                     start_index = i;
                     start_set = true;
@@ -48,7 +78,6 @@
             graph.config.data.labels = labels.slice(start_index, end_index);
             graph.update();
         }
-
     </script>
 </body>
 </html>
