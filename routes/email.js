@@ -30,7 +30,7 @@ router.post("/email/add", function (req, res) {
     if (email_address) {
         setTimeout(async () => {
             let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
-            if (emails) {
+            if (emails.length > 0) {
                 res.send("already added");
             } else {
                 await database_query("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1]);
@@ -47,7 +47,7 @@ router.post("/email/remove", function (req, res) {
     if (email_address) {
         setTimeout(async () => {
             let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
-            if (emails) {
+            if (emails.length > 0) {
                 await database_query("DELETE FROM emails WHERE email = ?", [email_address]);
                 res.send("deleted");
             } else {
