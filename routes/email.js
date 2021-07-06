@@ -14,8 +14,10 @@ function database_query(sql, params=[]) {
     return new Promise(function (resolve, reject) {
        database.all(sql, params, function (err, rows) {
             if (err) {
+                database.close();
                 reject(err);
             } else {
+                database.close();
                 resolve(rows);
             }
        });
