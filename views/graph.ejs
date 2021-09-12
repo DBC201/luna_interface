@@ -22,21 +22,29 @@
             hiddenElement.download = "<%-file_name %>";
             hiddenElement.click();
         }
-        let is_live = "<%- type %>" === "live";
+        let type = "<%- type %>";
         let x_axis = [];
         let y_axis = [];
-        if (is_live) {
+        if (type === "live") {
             let start_time = file_data[0]['T'];
             for (let i=0; i<file_data.length; i++) {
                 let current_time = (file_data[i]['T']-start_time);
                 x_axis.push(current_time);
                 y_axis.push(file_data[i]['p']);
             }
-        } else {
+        } else if (type === "historical") {
             let start_time = file_data[0]['time'];
             for (let i=0; i<file_data.length; i++) {
                 let current_time = (file_data[i]['time']-start_time);
                 x_axis.push(current_time);
+                y_axis.push(file_data[i]['price']);
+            }
+        } else {
+            let i = file_data.length - 1;
+            let start_time = file_data[i]['create_time_ms'];
+            for (; i >= 0; i--) {
+                let current_time = (file_data[i]['create_time_ms']-start_time);
+                x_axis.push(Math.floor(current_time));
                 y_axis.push(file_data[i]['price']);
             }
         }
