@@ -3,9 +3,12 @@ require("dotenv").config({path: path.join(__dirname, "..", ".env.local")});
 const router = require("express").Router();
 const fs = require("fs");
 
+let gateListingPattern = /.*-(?<year>\d+)-(?<month>\d+)-(?<day>\d+)_(?<time>.*)\.json/;
+let binanceListingPattern = /.*_(?<year>\d+)-(?<month>\d+)-(?<day>\d+)_(?<time>.*)\.json/;
+
 router.get("/trades/gate", function(req, res) {
     let file_names = fs.readdirSync(process.env.gate_path);
-    file_names = sortGateFileNames(file_names);
+    file_names = sortFileNames(file_names, gateListingPattern);
     res.render("files", {
         type: "gate",
         file_names: file_names
@@ -15,7 +18,7 @@ router.get("/trades/gate", function(req, res) {
 
 router.get("/trades/live", function(req, res) {
     let file_names = fs.readdirSync(process.env.live_path);
-    file_names = sortBinanceFileNames(file_names);
+    file_names = sortFileNames(file_names, binanceListingPattern);
     res.render("files", {
         type: "live",
         file_names: file_names
@@ -24,7 +27,7 @@ router.get("/trades/live", function(req, res) {
 
 router.get("/trades/historical", function(req, res) {
     let file_names = fs.readdirSync(process.env.historical_path);
-    file_names = sortBinanceFileNames(file_names);
+    file_names = sortFileNames(file_names, binanceListingPattern);
     res.render("files", {
         type: "historical",
         file_names: file_names
@@ -76,52 +79,24 @@ router.get("/trades/historical/:file", function (req, res) {
     }
 });
 
-function sortGateFileNames(file_names) {
+function sortFileNames(file_names, file_pattern) {
     return file_names.sort(function(a, b) {
-        let year1 = a.split("-")[1];
-        let year2 = b.split("-")[1];
-        if (year1 != year2) {
-            return year2 - year1;
+        console.log(a);
+        a = file_pattern.exec(a).groups;
+        file_pattern.lastIndex = 0;
+        b = file_pattern.exec(b).groups;
+        console.log(b);
+        file_pattern.lastIndex = 0;
+        if (a.year != b.year) {
+            return b.year - a.year;
         }
-        let month1 = a.split("-")[2];
-        let month2 = b.split("-")[2];
-        if (month1 != month2) {
-            return month2 - month1;
+        if (a.month != b.month) {
+            return b.month - a.month;
         }
-        let day1 = a.split("-")[3].substring(0, 2);
-        let day2 = b.split("-")[3].substring(0, 2);
-        if (day1 != day2) {
-            return day2 - day1;
+        if (a.day != b.day) {
+            return b.day - a.day;
         }
-        let time1 = a.split("_")[2].split(".").join("").substring(0, 6);
-        let time2 = b.split("_")[2].split(".").join("").substring(0, 6);
-        return time2 - time1;
-    });
-}
-
-function sortBinanceFileNames(file_names) {
-    return file_names.sort(function(a, b) {
-        let date1 = a.split("_")[1];
-        let date2 = b.split("_")[1];
-
-        let year1 = date1.split("-")[0];
-        let year2 = date2.split("-")[0];
-        if (year1 != year2) {
-            return year2 - year1;
-        }
-        let month1 = date1.split("-")[1];
-        let month2 = date2.split("-")[1];
-        if (month1 != month2) {
-            return month2 - month1;
-        }
-        let day1 = date1.split("-")[2];
-        let day2 = date2.split("-")[2];
-        if (day1 != day2) {
-            return day2 - day1;
-        }
-        let time1 = a.split("_")[2].split(".").join("").substring(0, 6);
-        let time2 = b.split("_")[2].split(".").join("").substring(0, 6);
-        return time2 - time1;
+        return b.time - a.time;
     });
 }
 
