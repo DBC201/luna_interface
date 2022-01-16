@@ -8,7 +8,7 @@ router.post("/email/add", function (req, res) {
         setTimeout(async () => {
 
             let emails = database.prepare("SELECT * FROM emails WHERE email = ?").get([email_address]);
-            if (emails.length > 0) {
+            if (emails !== undefined) {
                 res.send("already added");
             } else {
                 database.prepare("INSERT INTO emails(email, valid) VALUES(?,?)").run([email_address, 1]);
@@ -25,7 +25,7 @@ router.post("/email/remove", function (req, res) {
     if (email_address) {
         setTimeout(async () => {
             let emails = database.prepare("SELECT * FROM emails WHERE email = ?").get([email_address]);
-            if (emails.length > 0) {
+            if (emails !== undefined) {
                 database.prepare("DELETE FROM emails WHERE email = ?").run([email_address]);
                 res.send("deleted");
             } else {
