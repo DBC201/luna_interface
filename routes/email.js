@@ -1,39 +1,17 @@
 const router = require("express").Router();
-const sqlite3 = require('sqlite3').verbose();
-
-function open_database(path) {
-    return new sqlite3.Database(path, (error) => {
-        if (error) {
-            return console.error(error.message);
-        }
-    });
-}
-
-function database_query(sql, params=[]) {
-    let database = open_database(process.env.database_dir);
-    return new Promise(function (resolve, reject) {
-       database.all(sql, params, function (err, rows) {
-            if (err) {
-                database.close();
-                reject(err);
-            } else {
-                database.close();
-                resolve(rows);
-            }
-       });
-    });
-}
-
+const Database = require("better-sqlite3");
+const database = new Database(process.env.database_dir);
 
 router.post("/email/add", function (req, res) {
     let email_address = req.body.email;
     if (email_address) {
         setTimeout(async () => {
-            let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
+
+            let emails = database.prepare("SELECT * FROM emails WHERE email = ?").get([email_address]);
             if (emails.length > 0) {
                 res.send("already added");
             } else {
-                await database_query("INSERT INTO emails(email, valid) VALUES(?,?)", [email_address, 1]);
+                database.prepare("INSERT INTO emails(email, valid) VALUES(?,?)").run([email_address, 1]);
                 res.send("done");
             }
         }, 3000);
@@ -46,9 +24,9 @@ router.post("/email/remove", function (req, res) {
     let email_address = req.body.email;
     if (email_address) {
         setTimeout(async () => {
-            let emails = await database_query("SELECT * FROM emails WHERE email = ?", [email_address]);
+            let emails = database.prepare("SELECT * FROM emails WHERE email = ?").get([email_address]);
             if (emails.length > 0) {
-                await database_query("DELETE FROM emails WHERE email = ?", [email_address]);
+                database.prepare("DELETE FROM emails WHERE email = ?").run([email_address]);
                 res.send("deleted");
             } else {
                 res.send("this email doesn't exist in the database.");
