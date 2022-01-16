@@ -6,73 +6,73 @@ const fs = require("fs");
 let gateListingPattern = /.*-(?<year>\d+)-(?<month>\d+)-(?<day>\d+)_(?<time>.*)\.json/;
 let binanceListingPattern = /.*_(?<year>\d+)-(?<month>\d+)-(?<day>\d+)_(?<time>.*)\.json/;
 
-router.get("/trades/gate", function(req, res) {
-    let file_names = fs.readdirSync(process.env.gate_path);
+router.get("/trades/gate_historical", function(req, res) {
+    let file_names = fs.readdirSync(process.env.gate_historical_path);
     file_names = sortFileNames(file_names, gateListingPattern);
     res.render("files", {
-        type: "gate",
+        type: "gate_historical",
         file_names: file_names
     });
 });
 
 
-router.get("/trades/live", function(req, res) {
-    let file_names = fs.readdirSync(process.env.live_path);
+router.get("/trades/binance_live", function(req, res) {
+    let file_names = fs.readdirSync(process.env.binance_live_path);
     file_names = sortFileNames(file_names, binanceListingPattern);
     res.render("files", {
-        type: "live",
+        type: "binance_live",
         file_names: file_names
     });
 });
 
-router.get("/trades/historical", function(req, res) {
-    let file_names = fs.readdirSync(process.env.historical_path);
+router.get("/trades/binance_historical", function(req, res) {
+    let file_names = fs.readdirSync(process.env.binance_historical_path);
     file_names = sortFileNames(file_names, binanceListingPattern);
     res.render("files", {
-        type: "historical",
+        type: "binance_historical",
         file_names: file_names
     });
 });
 
-router.get("/trades/gate/:file", function (req, res) {
+router.get("/trades/gate_historical/:file", function (req, res) {
     let file_name = req.params.file;
-    let files = fs.readdirSync(process.env.gate_path);
+    let files = fs.readdirSync(process.env.gate_historical_path);
     if (files.indexOf(file_name) !== -1) {
         res.render("graph", {
             title: file_name.split('-')[0],
             file_name: file_name,
-            data: fs.readFileSync(path.join(process.env.gate_path, file_name), "utf-8"),
-            type: "gate"
+            data: fs.readFileSync(path.join(process.env.gate_historical_path, file_name), "utf-8"),
+            type: "gate_historical"
         });
     } else {
         res.send("Wrong graph");
     }
 });
 
-router.get("/trades/live/:file", function (req, res) {
+router.get("/trades/binance_live/:file", function (req, res) {
     let file_name = req.params.file;
     let files = fs.readdirSync(process.env.live_path);
     if (files.indexOf(file_name) !== -1) {
         res.render("graph", {
             title: file_name.split('_')[0],
             file_name: file_name,
-            data: fs.readFileSync(path.join(process.env.live_path, file_name), "utf-8"),
-            type: "live"
+            data: fs.readFileSync(path.join(process.env.binance_live_path, file_name), "utf-8"),
+            type: "binance_live"
         });
     } else {
         res.send("Wrong graph");
     }
 });
 
-router.get("/trades/historical/:file", function (req, res) {
+router.get("/trades/binance_historical/:file", function (req, res) {
     let file_name = req.params.file;
-    let files = fs.readdirSync(process.env.historical_path);
+    let files = fs.readdirSync(process.env.binance_historical_path);
     if (files.indexOf(file_name) !== -1) {
         res.render("graph", {
             title: file_name.split('_')[0],
             file_name: file_name,
-            data: fs.readFileSync(path.join(process.env.historical_path, file_name), "utf-8"),
-            type: "historical"
+            data: fs.readFileSync(path.join(process.env.binance_historical_path, file_name), "utf-8"),
+            type: "binance_historical"
         });
     } else {
         res.send("Wrong graph");

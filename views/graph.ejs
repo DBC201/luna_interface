@@ -25,14 +25,14 @@
         let type = "<%- type %>";
         let x_axis = [];
         let y_axis = [];
-        if (type === "live") {
+        if (type === "binance_live") {
             let start_time = file_data[0]['T'];
             for (let i=0; i<file_data.length; i++) {
                 let current_time = (file_data[i]['T']-start_time);
                 x_axis.push(current_time);
                 y_axis.push(file_data[i]['p']);
             }
-        } else if (type === "historical") {
+        } else if (type === "binance_historical") {
             let start_time = file_data[0]['time'];
             for (let i=0; i<file_data.length; i++) {
                 let current_time = (file_data[i]['time']-start_time);
