@@ -51,7 +51,7 @@ router.get("/trades/gate_historical/:file", function (req, res) {
 
 router.get("/trades/binance_live/:file", function (req, res) {
     let file_name = req.params.file;
-    let files = fs.readdirSync(process.env.live_path);
+    let files = fs.readdirSync(process.env.binance_live_path);
     if (files.indexOf(file_name) !== -1) {
         res.render("graph", {
             title: file_name.split('_')[0],
