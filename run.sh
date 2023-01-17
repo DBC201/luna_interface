@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup sudo node main.js > "output.txt" &
+nohup sudo node luna_interface_main.js > "output.txt" &
